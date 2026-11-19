@@ -1,0 +1,13 @@
+Package: com.example.demo
+Version: 1.0-2
+Architecture: iphoneos-arm
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000), firmware (<< 8.3) | com.saurik.patcyh
+Description: 中文描述测试
+ 续行第二行：含制表符	与空格
+ 第三行
+
+Package: firmware-sbin
+Version: 0-1
+Architecture: iphoneos-arm
+Essential: yes

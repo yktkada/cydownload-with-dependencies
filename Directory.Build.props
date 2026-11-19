@@ -1,0 +1,27 @@
+<Project>
+
+  <!--
+    与 iDeviceInstaller 一致的质量基线：0 警告由机器保证，不靠自觉。
+    TreatWarningsAsErrors 只作用于编译器警告（C#）；MSBuild 引擎级警告另由 MSBuildTreatWarningsAsErrors 控制。
+  -->
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!--
+    版本基线 1.0.0。内部修订只递增 r（1.0.0r1 / r2 …），不改语义版本；
+    除 r 之外任何抬升都必须由设计。开发过程中不提前改这里。
+  -->
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+  </PropertyGroup>
+
+</Project>

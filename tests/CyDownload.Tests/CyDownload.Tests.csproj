@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 与被测程序同 TFM（主程序是 net10.0-windows + WPF），否则引用不上 -->
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>CyDownload.Tests</AssemblyName>
+    <RootNamespace>CyDownload.Tests</RootNamespace>
+
+    <!-- 走 Microsoft Testing Platform 自执行（xunit.v3），不用 vstest testhost：
+         vstest 的 testhost 需要监视父进程退出，沙箱下会直接崩。 -->
+    <OutputType>Exe</OutputType>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CyDownload.App\CyDownload.App.csproj" />
+  </ItemGroup>
+  <!-- 测试夹具（bz2 索引 / 明文对照）随输出复制 -->
+  <ItemGroup>
+    <None Include="Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
+

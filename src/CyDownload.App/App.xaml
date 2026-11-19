@@ -1,0 +1,11 @@
+<Application x:Class="CyDownload.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        刻意不设 StartupUri：启动顺序是硬要求
+        ① 单实例 Mutex → ② 程序目录可写自检 → ③ 才建主窗口。
+        否则自检还没跑，窗口就已经出来了。
+    -->
+    <Application.Resources>
+    </Application.Resources>
+</Application>

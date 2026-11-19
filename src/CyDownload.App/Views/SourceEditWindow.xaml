@@ -1,0 +1,67 @@
+<Window x:Class="CyDownload.App.Views.SourceEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource SourceEdit.Title}"
+        Height="440" Width="560" WindowStartupLocation="CenterOwner" FontSize="12">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="{DynamicResource SourceEdit.Save}" Padding="16,4" IsDefault="True" Margin="0,0,8,0"
+                    Click="OnSaveClick" />
+            <Button Content="{DynamicResource SourceEdit.Cancel}" Padding="16,4" IsCancel="True"
+                    Click="OnCancelClick" />
+        </StackPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="{DynamicResource SourceEdit.Name}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="NameBox" VerticalContentAlignment="Center"
+                     TextChanged="OnInputChanged" />
+
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{DynamicResource SourceEdit.NameHint}"
+                       FontSize="11" Foreground="#777" TextWrapping="Wrap" Margin="0,0,0,4" />
+
+            <TextBlock Grid.Row="2" Text="{DynamicResource SourceEdit.BaseUrl}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="BaseUrlBox" VerticalContentAlignment="Center"
+                     TextChanged="OnInputChanged" />
+
+            <TextBlock Grid.Row="3" Text="{DynamicResource SourceEdit.Layout}" VerticalAlignment="Center" />
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="LayoutCombo" Height="22" VerticalContentAlignment="Center" />
+
+            <TextBlock Grid.Row="4" Text="{DynamicResource SourceEdit.Suite}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="4" Grid.Column="1" x:Name="SuiteBox" VerticalContentAlignment="Center" />
+
+            <TextBlock Grid.Row="5" Text="{DynamicResource SourceEdit.Component}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="5" Grid.Column="1" x:Name="ComponentBox" VerticalContentAlignment="Center" />
+
+            <TextBlock Grid.Row="6" Text="{DynamicResource SourceEdit.Priority}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="6" Grid.Column="1" x:Name="PriorityBox" VerticalContentAlignment="Center" />
+
+            <TextBlock Grid.Row="7" Text="{DynamicResource SourceEdit.Architecture}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="7" Grid.Column="1" x:Name="ArchitectureBox" VerticalContentAlignment="Center" />
+
+            <CheckBox Grid.Row="8" Grid.Column="1" x:Name="EnabledBox" IsChecked="True"
+                      Content="{DynamicResource SourceEdit.Enabled}" Margin="0,6,0,0" />
+
+            <Border Grid.Row="9" Grid.ColumnSpan="2" Margin="0,10,0,0" Padding="8,6" Background="#F4F6FA"
+                    BorderBrush="#C9D2E0" BorderThickness="1">
+                <TextBlock x:Name="PreviewText" FontSize="11" Foreground="#333" TextWrapping="Wrap" />
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
+

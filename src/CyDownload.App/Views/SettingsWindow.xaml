@@ -1,0 +1,156 @@
+<Window x:Class="CyDownload.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Settings.Title}"
+        Height="560" Width="620" WindowStartupLocation="CenterOwner" FontSize="12">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="{DynamicResource Settings.Save}" Padding="16,4" IsDefault="True" Margin="0,0,8,0"
+                    Click="OnSaveClick" />
+            <Button Content="{DynamicResource Settings.Cancel}" Padding="16,4" IsCancel="True" Click="OnCancelClick" />
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- 语言 -->
+                <GroupBox Header="{DynamicResource Settings.Language}" Margin="0,0,0,8" Padding="8">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox x:Name="LanguageCombo" Width="180" Height="22" VerticalContentAlignment="Center" />
+                            <TextBlock Text="{DynamicResource Settings.LanguageHint}" Margin="10,0,0,0"
+                                       VerticalAlignment="Center" Foreground="#666" FontSize="11" />
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 目标设备 -->
+                <GroupBox Header="{DynamicResource Settings.Target}" Margin="0,0,0,8" Padding="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="{DynamicResource Settings.Preset}" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="PresetCombo" Height="22"
+                                  VerticalContentAlignment="Center" SelectionChanged="OnPresetChanged" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{DynamicResource Settings.PresetHint}"
+                                   FontSize="11" Foreground="#777" TextWrapping="Wrap" Margin="0,0,0,4" />
+
+                        <TextBlock Grid.Row="2" Text="{DynamicResource Settings.ProductType}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="ProductTypeBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="3" Text="{DynamicResource Settings.IosVersion}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="IosVersionBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="4" Text="{DynamicResource Settings.BuildVersion}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="BuildVersionBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="5" Text="{DynamicResource Settings.CfVersion}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="5" Grid.Column="1" x:Name="CfVersionBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="6" Text="{DynamicResource Settings.KernelVersion}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="6" Grid.Column="1" x:Name="KernelVersionBox" VerticalContentAlignment="Center" />
+                    </Grid>
+                </GroupBox>
+
+                <!-- 依赖基线 -->
+                <GroupBox Header="{DynamicResource Settings.Base}" Margin="0,0,0,8" Padding="8">
+                    <StackPanel>
+                        <RadioButton x:Name="BasePresetRadio" Content="{DynamicResource Settings.BasePreset}"
+                                     Margin="0,0,0,6" />
+                        <RadioButton x:Name="BaseNoneRadio" Content="{DynamicResource Settings.BaseNone}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 资料库 -->
+                <GroupBox Header="{DynamicResource Main.Pane.Library}" Margin="0,0,0,8" Padding="8">
+                    <StackPanel>
+                        <CheckBox x:Name="MergeSameGroupsBox"
+                                  Content="{DynamicResource Settings.MergeSameGroups}" />
+                        <TextBlock Text="{DynamicResource Settings.MergeSameGroupsHint}" FontSize="11"
+                                   Foreground="#777" TextWrapping="Wrap" Margin="18,4,0,0" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 源显示 -->
+                <GroupBox Header="{DynamicResource Settings.SourceVisibility}" Margin="0,0,0,8" Padding="8">
+                    <StackPanel>
+                        <CheckBox x:Name="ShowDisabledSourcesBox"
+                                  Content="{DynamicResource Settings.ShowDisabledSources}" />
+                        <TextBlock Text="{DynamicResource Settings.ShowDisabledSourcesHint}" FontSize="11"
+                                   Foreground="#777" TextWrapping="Wrap" Margin="18,4,0,0" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 网络 -->
+                <GroupBox Header="{DynamicResource Settings.Http}" Margin="0,0,0,8" Padding="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="{DynamicResource Settings.NoProgress}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="NoProgressBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="1" Text="{DynamicResource Settings.TotalTimeout}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TotalTimeoutBox" VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="2" Text="{DynamicResource Settings.MaxParallel}" VerticalAlignment="Center"
+                                   ToolTip="{DynamicResource Settings.MaxParallelHint}" />
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="MaxParallelBox" VerticalContentAlignment="Center"
+                                 ToolTip="{DynamicResource Settings.MaxParallelHint}" />
+
+                        <TextBlock Grid.Row="3" Text="{DynamicResource Settings.MaxPerRepo}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="MaxPerRepoBox" VerticalContentAlignment="Center" />
+                    </Grid>
+                </GroupBox>
+
+                <!-- 目录 -->
+                <GroupBox Header="{DynamicResource Settings.Paths}" Padding="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="{DynamicResource Settings.ArchiveRoot}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="ArchiveRootBox" IsReadOnly="True"
+                                 VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="1" Text="{DynamicResource Settings.ProgramDir}" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="ProgramDirBox" IsReadOnly="True"
+                                 VerticalContentAlignment="Center" />
+
+                        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{DynamicResource Settings.PathNote}"
+                                   Foreground="#666" FontSize="11" TextWrapping="Wrap" Margin="0,6,0,0" />
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
+
+

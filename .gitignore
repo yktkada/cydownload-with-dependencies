@@ -1,0 +1,29 @@
+# ── 构建输出 ──
+bin/
+obj/
+build-alt/
+
+# ── 发布产物 ──
+publish/
+
+# ── 运行期数据（只写程序目录；本地产物不入库）──
+data/
+logs/
+pool/
+archive/
+*.db
+*.db-shm
+*.db-wal
+*.part
+
+# ── 本地实验 / 一次性探针 ──
+probe/tmp/
+probe/shots/
+probe/_tmp_*
+*.tmp
+
+
+# Python 缓存（原型脚本）
+__pycache__/
+*.pyc
+

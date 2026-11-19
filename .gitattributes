@@ -1,0 +1,8 @@
+# 统一换行：仓库内一律 LF，避免 Windows 上每次 add 都刷 CRLF 警告
+* text=auto eol=lf
+
+# 二进制
+*.png binary
+*.ico binary
+*.db binary
+*.deb binary

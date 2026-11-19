@@ -1,0 +1,347 @@
+<Window x:Class="CyDownload.App.Views.MainWindow"
+        PreviewKeyDown="OnWindowPreviewKeyDown"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Main.Title}"
+        Height="760" Width="1320"
+        WindowStartupLocation="CenterScreen"
+        FontSize="12">
+    <!--
+        布局：顶部每源一个 Tab；下方三栏 左资料库 / 中源浏览器 / 右下载状态。
+        所有文案走 {DynamicResource}（运行时切换语言），代码侧文案走 Loc。
+    -->
+    <DockPanel>
+
+        <!-- 工具条 -->
+        <Border DockPanel.Dock="Top" Background="#F5F5F5" BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="6,4">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="{DynamicResource Main.Toolbar.Fetch}" Padding="10,3" Margin="0,0,6,0"
+                            Command="{Binding FetchCommand}" />
+                    <Button Content="{DynamicResource Main.Toolbar.Resolve}" Padding="10,3" Margin="0,0,6,0"
+                            Command="{Binding ResolveCommand}" />
+                    <Button Content="{DynamicResource Main.Toolbar.DownloadLibrary}" Padding="10,3" Margin="0,0,6,0"
+                            Command="{Binding DownloadToLibraryCommand}" />
+                    <Button Content="{DynamicResource Main.Toolbar.Export}" Padding="10,3" Margin="0,0,12,0"
+                            Command="{Binding ExportCommand}" />
+                    <TextBlock Text="{DynamicResource Main.Toolbar.Language}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                    <ComboBox x:Name="LanguageCombo" Width="120" Height="22" VerticalContentAlignment="Center"
+                              SelectionChanged="OnLanguageChanged" />
+                    <Button x:Name="SourceMenuButton" Content="{DynamicResource Main.Toolbar.Source}"
+                            Padding="10,3" Margin="12,0,0,0" Click="OnSourceMenuClick">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="BtnAddSource" Click="OnAddSourceClick" />
+                                <MenuItem x:Name="BtnEditSource" Click="OnEditSourceClick" />
+                                <MenuItem x:Name="BtnDeleteSource" Click="OnDeleteSourceClick" />
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button Content="{DynamicResource Main.Toolbar.Settings}" Padding="10,3" Margin="12,0,0,0"
+                            Click="OnSettingsClick" />
+                    <Button Content="{DynamicResource Main.Toolbar.Cancel}" Padding="10,3" Margin="12,0,0,0"
+                            Click="OnCancelOperationClick">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+                <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center" HorizontalAlignment="Right"
+                           Foreground="#333" TextTrimming="CharacterEllipsis" />
+            </DockPanel>
+        </Border>
+
+        <!-- 顶部：每源一个 Tab -->
+        <TabControl x:Name="SourceTabs" DockPanel.Dock="Top" MinHeight="28" Margin="6,6,6,0"
+                    MaxHeight="120"
+                    PreviewMouseRightButtonDown="OnSourceTabRightClick"
+                    ContextMenuOpening="OnSourceTabsContextMenuOpening"
+                    ItemsSource="{Binding Sources}"
+                    SelectedItem="{Binding SelectedSource, Mode=TwoWay}"
+                    DisplayMemberPath="Header">
+            <TabControl.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="AddSourceMenu" Click="OnAddSourceClick" />
+                    <MenuItem x:Name="EditSourceMenu" Click="OnEditSourceClick" />
+                    <MenuItem x:Name="DeleteSourceMenu" Click="OnDeleteSourceClick" />
+                </ContextMenu>
+            </TabControl.ContextMenu>
+        </TabControl>
+
+        <!-- 没有任何源时的引导（不是空白页签） -->
+        <Border DockPanel.Dock="Top" Margin="8,6,8,0" Padding="8,4" Background="#FFF6E5" BorderBrush="#E8C98A"
+                BorderThickness="1" CornerRadius="2">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasNoSources}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <DockPanel>
+                <Button Content="{DynamicResource Source.AddNow}" Padding="10,2" DockPanel.Dock="Right"
+                        Margin="8,0,0,0" Click="OnAddSourceClick" />
+                <TextBlock Text="{DynamicResource Source.EmptyHint}" Foreground="#7A5B00" TextWrapping="Wrap"
+                           VerticalAlignment="Center" />
+            </DockPanel>
+        </Border>
+
+        <!-- 源信息行 -->
+        <Border DockPanel.Dock="Top" Margin="8,4,8,0">
+            <TextBlock Text="{Binding SourceInfoText}" FontSize="11" Foreground="#555" TextTrimming="CharacterEllipsis" />
+        </Border>
+
+        <!-- 状态栏 -->
+        <Border DockPanel.Dock="Bottom" Background="#FAFAFA" BorderBrush="#DDD" BorderThickness="0,1,0,0" Padding="8,3">
+            <DockPanel>
+                <TextBlock Text="{Binding PackageCountText}" DockPanel.Dock="Left" FontSize="11" Foreground="#555" />
+                <TextBlock Text="{Binding SelectedCountText}" DockPanel.Dock="Left" Margin="12,0,0,0" FontSize="11"
+                           Foreground="#555" />
+                <TextBlock Text="{Binding LibraryCountText}" DockPanel.Dock="Right" FontSize="11" Foreground="#555" />
+            </DockPanel>
+        </Border>
+
+        <!-- 三栏 -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*" MinWidth="280" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="46*" MinWidth="380" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="24*" MinWidth="260" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 左：资料库（按插件分组，组内是整个依赖闭包；展开/收起行为对齐 iDeviceInstaller） -->
+            <DockPanel Grid.Column="0">
+                <!-- 标题与所有控件同属一个 WrapPanel：紧贴标题依次排列，面板窄时自动换行 -->
+                <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,4">
+                    <TextBlock Text="{DynamicResource Main.Pane.Library}" FontWeight="SemiBold"
+                               VerticalAlignment="Center" Margin="0,0,10,3" />
+
+                    <Button Content="{DynamicResource Main.Library.ExpandAll}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Click="OnExpandAllLibraryClick" />
+                    <Button Content="{DynamicResource Main.Library.CollapseAll}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Click="OnCollapseAllLibraryClick" />
+                    <Button Content="{DynamicResource Main.Library.Refresh}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Command="{Binding RefreshLibraryCommand}" />
+                    <Button Content="{DynamicResource Main.Library.Cleanup}" FontSize="11" Padding="5,1"
+                            Margin="0,0,12,3" Click="OnCleanupLibraryClick" />
+
+                    <TextBlock Text="{DynamicResource Main.Library.Group}" FontSize="11" VerticalAlignment="Center"
+                               Margin="0,0,4,3" />
+                    <ComboBox x:Name="LibraryGroupCombo" Width="110" Height="22" Margin="0,0,4,3"
+                              FontSize="11" VerticalContentAlignment="Center"
+                              ItemsSource="{Binding LibraryGroupNames}"
+                              SelectionChanged="OnLibraryGroupChanged"
+                              ToolTip="{DynamicResource Main.Library.Group}" />
+                    <Button Content="{DynamicResource Main.Library.NewGroup}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Click="OnNewLibraryGroupClick" />
+                    <Button Content="{DynamicResource Main.Library.RenameGroup}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Click="OnRenameLibraryGroupClick" />
+                    <Button Content="{DynamicResource Main.Library.DeleteGroup}" FontSize="11" Padding="5,1"
+                            Margin="0,0,4,3" Click="OnDeleteUserGroupClick" />
+                    <Button Content="{DynamicResource Main.Library.Repair}" FontSize="11" Padding="5,1"
+                            Margin="0,0,0,3" Click="OnRepairMissingClick" />
+                </WrapPanel>
+
+                <TextBox Height="22" Margin="0,0,0,4" VerticalContentAlignment="Center"
+                         DockPanel.Dock="Top"
+                         Text="{Binding LibrarySearchText, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{DynamicResource Main.Library.Search}" />
+
+                <TextBlock Text="{DynamicResource Main.Library.Empty}" Foreground="#777" TextWrapping="Wrap"
+                           DockPanel.Dock="Top" Margin="0,8">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasLibrary}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <DataGrid x:Name="LibraryGrid" ItemsSource="{Binding LibraryRows}"
+                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Extended"
+                          SelectionUnit="FullRow"
+                          SelectionChanged="OnLibrarySelectionChanged"
+                          GridLinesVisibility="None" HeadersVisibility="Column"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          MouseLeftButtonUp="OnLibraryRowClick"
+                          PreviewMouseRightButtonDown="OnLibraryGridRightButtonDown"
+                          ContextMenuOpening="OnLibraryContextMenuOpening" Sorting="OnLibrarySorting">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="LibMenuExportGroup" Click="OnExportLibraryGroupClick" />
+                            <MenuItem x:Name="LibMenuExportFile" Click="OnExportLibraryFileClick" />
+                            <Separator />
+                            <MenuItem x:Name="LibMenuOpenFolder" Click="OnOpenLibraryFolderClick" />
+                            <MenuItem x:Name="LibMenuExpand" Click="OnExpandLibraryRowClick" />
+                            <MenuItem x:Name="LibMenuCollapse" Click="OnCollapseLibraryRowClick" />
+                            <Separator />
+                            <MenuItem x:Name="LibMenuCopyPackageId" Click="OnCopyLibraryPackageIdClick" />
+                            <MenuItem x:Name="LibMenuCopyVersion" Click="OnCopyLibraryVersionClick" />
+                            <MenuItem x:Name="LibMenuCopyFileName" Click="OnCopyLibraryFileNameClick" />
+                            <MenuItem x:Name="LibMenuCopyRow" Click="OnCopyLibraryRowClick" />
+                            <Separator />
+                            <MenuItem x:Name="LibMenuDeleteGroup" Click="OnDeleteLibraryGroupClick" />
+                              <Separator />
+                              <MenuItem x:Name="LibMenuAddToGroup" Click="OnAddToGroupClick" />
+                              <MenuItem x:Name="LibMenuRemoveFromGroup" Click="OnRemoveFromGroupClick" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGroupMember}" Value="True">
+                                    <Setter Property="Background" Value="#F2F5FA" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsGroupEnd}" Value="True">
+                                    <Setter Property="BorderBrush" Value="#C9D2E0" />
+                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="LibGlyph" Width="16" Binding="{Binding Glyph}" />
+                        <DataGridTemplateColumn x:Name="LibName" Width="*" SortMemberPath="NameText">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding NameText}" Margin="{Binding IndentMargin}"
+                                               FontWeight="{Binding FontWeight}" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding RelativePath}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn x:Name="LibVersion" Width="90" Binding="{Binding VersionText}"
+                                              SortMemberPath="VersionText" CanUserSort="False" />
+                      <DataGridTextColumn x:Name="LibPkgId" Width="190" Binding="{Binding PackageId}"
+                                              SortMemberPath="PackageId" CanUserSort="False" />
+                      <DataGridTextColumn x:Name="LibGroup" Width="54" Binding="{Binding GroupText}" SortMemberPath="GroupText" />
+                        <DataGridTextColumn x:Name="LibSize" Width="72" Binding="{Binding SizeText}" SortMemberPath="Bytes" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+
+            <!-- 中：源浏览器 -->
+            <DockPanel Grid.Column="2">
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,4">
+                    <TextBlock Text="{DynamicResource Main.Pane.Browser}" FontWeight="SemiBold" DockPanel.Dock="Left" />
+                    <ComboBox x:Name="IosFilterCombo" Width="96" Height="22" Margin="6,0,0,0"
+                                HorizontalAlignment="Right" FontSize="11" VerticalContentAlignment="Center"
+                                ItemsSource="{Binding IosFilterOptions}"
+                                SelectedItem="{Binding IosFilterSelection, Mode=TwoWay}"
+                                ToolTip="{DynamicResource Main.Library.IosFilter}" />
+                      <TextBox x:Name="SearchBox" Width="200" Height="22" HorizontalAlignment="Right"
+                             VerticalContentAlignment="Center" Margin="8,0,0,0"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="{DynamicResource Main.Search.Watermark}" />
+                </DockPanel>
+                <TextBlock x:Name="EmptyBrowserHint" Text="{DynamicResource Main.Browser.NoSource}"
+                           Foreground="#777" TextWrapping="Wrap" DockPanel.Dock="Top" Margin="0,8" />
+                <DataGrid x:Name="PackageGrid" ItemsSource="{Binding Packages}"
+                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Extended"
+                          SelectionUnit="FullRow"
+                          GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          MouseDoubleClick="OnPackageDoubleClick"
+                           Sorting="OnPackageSorting"
+                          SelectionChanged="OnPackageSelectionChanged"
+                          PreviewMouseRightButtonDown="OnPackageGridRightButtonDown">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu PreviewKeyDown="OnContextMenuPreviewKeyDown">
+                            <MenuItem x:Name="PkgMenuResolve" Click="OnResolvePackageClick" />
+                            <MenuItem x:Name="PkgMenuExport" Click="OnExportPackageClick" />
+                            <MenuItem x:Name="PkgMenuDownloadLibrary" Click="OnDownloadPackageToLibraryClick" />
+                            <MenuItem x:Name="PkgMenuDetail" Click="OnPackageDetailMenuClick" />
+                            <Separator />
+                            <MenuItem x:Name="PkgMenuCopyPackageId" Click="OnCopyPackageIdClick" />
+                            <MenuItem x:Name="PkgMenuCopyVersion" Click="OnCopyPackageVersionClick" />
+                            <MenuItem x:Name="PkgMenuCopyRow" Click="OnCopyPackageRowClick" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="ColPackageId" Binding="{Binding PackageId}" Width="260" SortMemberPath="PackageId" />
+                        <DataGridTextColumn x:Name="ColName" Binding="{Binding NameOrId}" Width="200" SortMemberPath="NameOrId" />
+                        <DataGridTextColumn x:Name="ColVersion" Binding="{Binding Version}" Width="130" SortMemberPath="Version" />
+                        <DataGridTextColumn x:Name="ColSection" Binding="{Binding Section}" Width="120" />
+                        <DataGridTextColumn x:Name="ColSize" Binding="{Binding SizeText}" Width="80" SortMemberPath="SizeBytes" />
+                        <DataGridTextColumn x:Name="ColRepo" Binding="{Binding Repo}" Width="90" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="3" Width="5" HorizontalAlignment="Stretch" />
+
+            <!-- 右：下载状态（队列 + 进度；日志面板按，日志只写文件） -->
+            <DockPanel Grid.Column="4">
+                <TextBlock Text="{DynamicResource Main.Pane.Status}" FontWeight="SemiBold" DockPanel.Dock="Top"
+                           Margin="0,0,0,4" />
+
+                <ProgressBar DockPanel.Dock="Top" Height="4" Margin="0,0,0,8" Maximum="100"
+                             Value="{Binding ExportProgressValue, Mode=OneWay}" />
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,4">
+                    <TextBlock Text="{DynamicResource Main.Queue.Title}" FontSize="11" Foreground="#555"
+                               DockPanel.Dock="Left" VerticalAlignment="Center" />
+                    <Button Content="{DynamicResource Main.Queue.Clear}" FontSize="11" Padding="6,1"
+                            HorizontalAlignment="Right" Click="OnClearQueueClick" />
+                </DockPanel>
+                <TextBlock Text="{DynamicResource Main.Queue.Empty}" Foreground="#777" FontSize="11"
+                           DockPanel.Dock="Top" Margin="0,4">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DownloadItems.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox x:Name="DownloadQueue" ItemsSource="{Binding DownloadItems}" FontSize="11"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Status}" DockPanel.Dock="Right" Margin="6,0,0,0"
+                                           Foreground="#555" />
+                                <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>
+
+
+
+
+
+
+
+
+
+
+

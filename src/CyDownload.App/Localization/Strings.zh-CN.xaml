@@ -1,0 +1,271 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!--
+        中文（默认语言）。键命名见 。
+        多行文案用 &#10; 表示换行，不要写裸换行（会被 XAML 缩进污染）。
+        缺键时 Loc 会返回 [键名]，漏翻在界面上立刻可见。
+    -->
+
+    <!-- 主窗口 -->
+    <sys:String x:Key="Main.Title">CyDownload</sys:String>
+
+    <!-- 启动自检 -->
+    <sys:String x:Key="App.SingleInstance.Title">CyDownload 仅允许一个实例</sys:String>
+    <sys:String x:Key="App.SingleInstance.Message">CyDownload 已在运行。&#10;&#10;为防止两个进程同时写同一个存档库，本程序只允许开一个窗口。</sys:String>
+    <sys:String x:Key="App.NotWritable.Title">未能写入程序目录</sys:String>
+    <sys:String x:Key="App.NotWritable.Message">由于不能写入程序目录，数据与日志未能保存。&#10;&#10;目录：{0}&#10;原因：{1}&#10;&#10;请将程序复制到可写位置后重试。仅读写程序目录。</sys:String>
+    <sys:String x:Key="App.LogsNotWritable.Message">未能创建或写入日志目录。&#10;&#10;目录：{0}&#10;原因：{1}&#10;&#10;请将程序复制到可写位置后重试。</sys:String>
+    <sys:String x:Key="App.TempNotWritable.Title">未能写入临时目录</sys:String>
+    <sys:String x:Key="App.TempNotWritable.Message">未能创建或写入临时目录。&#10;&#10;目录：{0}&#10;原因：{1}&#10;&#10;请将程序复制到可写位置后重试。</sys:String>
+    <sys:String x:Key="App.StartupFailed.Title">启动失败</sys:String>
+    <sys:String x:Key="App.StartupFailed.Message">程序未能启动。&#10;&#10;{0}</sys:String>
+
+    <!-- 状态与错误 -->
+    <sys:String x:Key="Status.OperationFailed">{0} 未完成：{1}: {2}</sys:String>
+    <sys:String x:Key="Status.UnhandledError">未处理异常：{0}</sys:String>
+    <sys:String x:Key="Err.Db.OpenFailed">未能打开存档库：{0}</sys:String>
+    <sys:String x:Key="Err.Db.VersionMismatch">存档库版本不匹配：{0}</sys:String>
+    <sys:String x:Key="Err.ResolveFailed">无法算出依赖闭包：{0}</sys:String>
+    <sys:String x:Key="Err.ExportFailed">导出失败：{0}</sys:String>
+    <sys:String x:Key="Err.SettingsSave">设置未能保存：{0}</sys:String>
+    <sys:String x:Key="Err.RequiredTarget">机型与 iOS 版本不能为空。</sys:String>
+
+    <!-- 工具条 -->
+    <sys:String x:Key="Main.Toolbar.Fetch">抓取索引</sys:String>
+    <sys:String x:Key="Main.Toolbar.Resolve">算闭包</sys:String>
+    <sys:String x:Key="Main.Toolbar.Export">导出到…</sys:String>
+    <sys:String x:Key="Main.Toolbar.DownloadLibrary">下载到资料库</sys:String>
+    <sys:String x:Key="Menu.Package.DownloadLibrary">下载到资料库（含依赖）</sys:String>
+    <sys:String x:Key="Closure.DownloadLibrary">下载到资料库</sys:String>
+    <sys:String x:Key="Closure.BackgroundHint">下载 / 导出在后台继续：可以关掉这个窗口，回主窗口继续浏览软件包。</sys:String>
+    <sys:String x:Key="Download.Library.Done">已下载 {0} 个 deb 到资料库（缓存命中 {1} 个），并写入资料库分组。&#10;&#10;想导出时右键资料库里的那一组 →「导出这一组」。</sys:String>
+    <sys:String x:Key="Err.NoSelection">先在中栏选中要下载的包。</sys:String>
+    <sys:String x:Key="Main.Toolbar.Settings">设置</sys:String>
+    <sys:String x:Key="Main.Toolbar.Source">源</sys:String>
+    <sys:String x:Key="Source.EmptyHint">还没有源。点工具条上的「源」→「添加源…」，或直接抓取内置的默认源。</sys:String>
+    <sys:String x:Key="Source.AddNow">添加源…</sys:String>
+    <sys:String x:Key="Main.Toolbar.Language">语言</sys:String>
+    <sys:String x:Key="Main.Toolbar.OpenArchive">打开存档目录</sys:String>
+
+    <!-- 三栏 -->
+    <sys:String x:Key="Main.Library.NameHeader">名称</sys:String>
+    <sys:String x:Key="Main.Library.VersionHeader">版本</sys:String>
+    <sys:String x:Key="Main.Library.PackageHeader">包名</sys:String>
+    <sys:String x:Key="Main.Pane.Library">资料库</sys:String>
+    <sys:String x:Key="Main.Pane.Browser">源浏览器</sys:String>
+    <sys:String x:Key="Main.Pane.Status">下载状态</sys:String>
+
+    <!-- 源浏览器 -->
+    <sys:String x:Key="Main.Search.Watermark">搜索包名 / 描述</sys:String>
+    <sys:String x:Key="Main.Browser.NoSource">还没有可浏览的源。先点「抓取索引」。</sys:String>
+    <sys:String x:Key="Main.Browser.Empty">这个源没有已入库的包。</sys:String>
+    <sys:String x:Key="Main.Browser.Count">共 {0} 个包{1}</sys:String>
+    <sys:String x:Key="Main.Browser.Filtered">（筛选后）</sys:String>
+    <sys:String x:Key="Main.Browser.SelectedCount">已选 {0} 个</sys:String>
+
+    <!-- 列头 -->
+    <sys:String x:Key="Column.Name">名称</sys:String>
+    <sys:String x:Key="Column.Version">版本</sys:String>
+    <sys:String x:Key="Column.Architecture">架构</sys:String>
+    <sys:String x:Key="Column.Section">分类</sys:String>
+    <sys:String x:Key="Column.Size">体积</sys:String>
+    <sys:String x:Key="Column.Repo">源</sys:String>
+    <sys:String x:Key="Column.File">文件</sys:String>
+    <sys:String x:Key="Column.Count">数量</sys:String>
+
+    <!-- 资料库 -->
+    <sys:String x:Key="Main.Library.Empty">资料库里还没有 deb。导出后会出现在这里。</sys:String>
+    <sys:String x:Key="Main.Library.Count">共 {0} 个文件 / {1}</sys:String>
+    <sys:String x:Key="Main.Library.Refresh">刷新</sys:String>
+    <sys:String x:Key="Main.Library.Repair">修复缺失</sys:String>
+    <sys:String x:Key="Repair.Confirm">有 {0} 个包的文件不在磁盘上。要从源里重新下载并修复登记吗？（索引里已找不到的包会跳过）</sys:String>
+    <sys:String x:Key="Repair.None">没有缺失的文件。</sys:String>
+    <sys:String x:Key="Repair.Done">修复完成：{0} 个成功，{1} 个失败。</sys:String>
+    <sys:String x:Key="Main.Library.Cleanup">清理已移除</sys:String>
+    <sys:String x:Key="Main.Library.Group">分组</sys:String>
+    <sys:String x:Key="Main.Library.IosFilter">iOS</sys:String>
+    <sys:String x:Key="Main.Library.IosAll">全部版本</sys:String>
+    <sys:String x:Key="Main.Library.SortHint">点列头排序</sys:String>
+    <sys:String x:Key="Main.Library.AllGroups">全部</sys:String>
+    <sys:String x:Key="Main.Library.NewGroup">新建分组…</sys:String>
+    <sys:String x:Key="Main.Library.RenameGroup">重命名分组…</sys:String>
+    <sys:String x:Key="Main.Library.DeleteGroup">删除分组</sys:String>
+    <sys:String x:Key="Main.Library.AddToGroup">加入分组…</sys:String>
+    <sys:String x:Key="Main.Library.RemoveFromGroup">从当前分组移出</sys:String>
+    <sys:String x:Key="Group.Title">用户分组</sys:String>
+    <sys:String x:Key="Group.Save">保存</sys:String>
+    <sys:String x:Key="Group.Cancel">取消</sys:String>
+    <sys:String x:Key="Group.NewPrompt">新分组名称：</sys:String>
+    <sys:String x:Key="Group.RenamePrompt">新的分组名称：</sys:String>
+    <sys:String x:Key="Group.NameEmpty">分组名不能为空。</sys:String>
+    <sys:String x:Key="Group.SelectFirst">需要先选一个分组（「全部」不能重命名）。</sys:String>
+    <sys:String x:Key="Group.NameExists">分组名已存在。</sys:String>
+    <sys:String x:Key="Group.DeleteConfirm">删除分组「{0}」？只删分组，资料库里的插件不受影响。</sys:String>
+    <sys:String x:Key="Group.Added">已加入分组「{0}」。</sys:String>
+    <sys:String x:Key="Group.Removed">已从分组「{0}」移出。</sys:String>
+    <sys:String x:Key="Group.AddToTitle">加入哪个分组？</sys:String>
+    <sys:String x:Key="Cleanup.None">没有需要清理的文件：资料库里的包都还在。</sys:String>
+    <sys:String x:Key="Cleanup.Confirm">将删除 {0} 个 deb 文件（{1}），这些包已不在资料库的任何分组里。文件会从磁盘删除，不可恢复。继续？</sys:String>
+    <sys:String x:Key="Cleanup.Done">已删除 {0} 个 deb 文件（{1}），清理台账 {2} 行。</sys:String>
+    <sys:String x:Key="Settings.MergeSameGroups">同一插件的多次记录合并成一行</sys:String>
+    <sys:String x:Key="Settings.MergeSameGroupsHint">默认合并（资料库去重显示）；关掉后每次下载/导出各占一行，便于查看历史差异。</sys:String>
+    <sys:String x:Key="Main.Library.Search">搜索插件 / 包名</sys:String>
+    <sys:String x:Key="Main.Library.ExpandAll">全部展开</sys:String>
+    <sys:String x:Key="Main.Library.CollapseAll">全部收起</sys:String>
+    <sys:String x:Key="Library.GroupCount">{0} 个</sys:String>
+    <sys:String x:Key="Library.Counts">资料库：{0} 个插件组 / {1} 个 deb</sys:String>
+
+    <!-- 右栏：状态与日志 -->
+    <sys:String x:Key="Download.Queued">已加入下载队列（还有 {0} 个包在等）</sys:String>
+    <sys:String x:Key="Busy.Another">另一个任务在跑（{0}），完成后再试</sys:String>
+    <sys:String x:Key="Main.Status.Canceled">已取消</sys:String>
+    <sys:String x:Key="Download.QueueDone">队列完成：共 {0} 个 deb（缓存命中 {1}）</sys:String>
+    <sys:String x:Key="Main.Status.NoResolution">还没有可导出的闭包：先算一次依赖闭包。</sys:String>
+    <sys:String x:Key="Main.Status.Idle">就绪</sys:String>
+    <sys:String x:Key="Main.Status.Busy">处理中…</sys:String>
+    <sys:String x:Key="Main.Status.Fetching">正在抓取索引：{0}</sys:String>
+    <sys:String x:Key="Main.Status.FetchingPercent">正在抓取索引：{0}  {1}%  {2}</sys:String>
+    <sys:String x:Key="Main.Status.Resolving">正在算闭包：{0}</sys:String>
+    <sys:String x:Key="Main.Status.Exporting">正在导出：{0}（{1}/{2}）</sys:String>
+    <sys:String x:Key="Main.Queue.Empty">下载队列为空</sys:String>
+    <sys:String x:Key="Download.Waiting">等待</sys:String>
+    <sys:String x:Key="Download.Running">下载中</sys:String>
+    <sys:String x:Key="Download.Cached">已缓存</sys:String>
+    <sys:String x:Key="Download.Done">完成</sys:String>
+    <sys:String x:Key="Download.Skipped">已存在（跳过）</sys:String>
+    <sys:String x:Key="Download.Failed">失败</sys:String>
+    <sys:String x:Key="Err.DirNotWritable">目标目录不可写，换个目录（例如桌面/文档）或右键以管理员身份运行：{0}</sys:String>
+    <sys:String x:Key="Err.Operation">操作失败：{0}</sys:String>
+    <sys:String x:Key="Err.FetchFailed">抓取失败（详情见日志）</sys:String>
+    <sys:String x:Key="Err.SourceExists">源名「{0}」已存在。</sys:String>
+    <sys:String x:Key="Err.SourceMissing">找不到源「{0}」。</sys:String>
+
+    <!-- 源页签 -->
+    <sys:String x:Key="Source.PackageCount">包数 {0}</sys:String>
+    <sys:String x:Key="Source.LastFetch">上次抓取 {0}</sys:String>
+    <sys:String x:Key="Source.Never">从未抓取</sys:String>
+    <sys:String x:Key="Source.Merged">全部</sys:String>
+    <sys:String x:Key="Source.MergedInfo">全部源合并视图（{0} 个源 / {1} 个包）</sys:String>
+    <sys:String x:Key="Main.Status.FetchingAll">正在抓取全部源：{0}（{1}/{2}）</sys:String>
+
+    <!-- 闭包窗口 -->
+    <sys:String x:Key="Closure.Title">依赖闭包</sys:String>
+    <sys:String x:Key="Closure.Download">下载清单</sys:String>
+    <sys:String x:Key="Closure.Satisfied">已满足</sys:String>
+    <sys:String x:Key="Closure.Unresolved">未解析</sys:String>
+    <sys:String x:Key="Closure.Summary">下载 {0} 个 / {1}，已满足 {2} 条，未解析 {3} 条</sys:String>
+    <sys:String x:Key="Closure.Cycles">环（顺序不保证）：{0}</sys:String>
+    <sys:String x:Key="Closure.Export">导出到…</sys:String>
+    <sys:String x:Key="Closure.Close">关闭</sys:String>
+    <sys:String x:Key="Closure.Target">目标：{0}</sys:String>
+
+    <!-- 包详情 -->
+    <sys:String x:Key="Detail.Title">包详情</sys:String>
+    <sys:String x:Key="Detail.PackageId">包名</sys:String>
+    <sys:String x:Key="Detail.DisplayName">显示名</sys:String>
+    <sys:String x:Key="Detail.Depends">依赖</sys:String>
+    <sys:String x:Key="Detail.PreDepends">前置依赖</sys:String>
+    <sys:String x:Key="Detail.Provides">提供</sys:String>
+    <sys:String x:Key="Detail.Filename">文件名</sys:String>
+    <sys:String x:Key="Detail.Md5">MD5</sys:String>
+    <sys:String x:Key="Detail.Description">描述</sys:String>
+    <sys:String x:Key="Detail.Maintainer">维护者</sys:String>
+    <sys:String x:Key="Detail.Close">关闭</sys:String>
+
+    <!-- 设置窗口 -->
+    <sys:String x:Key="Settings.Title">设置</sys:String>
+    <sys:String x:Key="Settings.Language">界面语言</sys:String>
+    <sys:String x:Key="Settings.LanguageHint">选择后立即生效，不需要重启。</sys:String>
+    <sys:String x:Key="Settings.Target">目标设备</sys:String>
+    <sys:String x:Key="Settings.Preset">内置机型</sys:String>
+    <sys:String x:Key="Settings.PresetCustom">自定义（手填下面的值）</sys:String>
+    <sys:String x:Key="Settings.PresetHint">选中内置机型会填入实测参数；手改下面的字段即为自定义。</sys:String>
+    <sys:String x:Key="Settings.ProductType">机型（hw.machine）</sys:String>
+    <sys:String x:Key="Settings.IosVersion">iOS 版本</sys:String>
+    <sys:String x:Key="Settings.BuildVersion">版本号（Build）</sys:String>
+    <sys:String x:Key="Settings.CfVersion">CoreFoundation 版本（cfversion）</sys:String>
+    <sys:String x:Key="Settings.KernelVersion">内核版本</sys:String>
+    <sys:String x:Key="Settings.Base">依赖基线</sys:String>
+    <sys:String x:Key="Settings.BasePreset">31 包预设（刚刷完机）</sys:String>
+    <sys:String x:Key="Settings.BaseNone">不假设任何已装（更稳）</sys:String>
+    <sys:String x:Key="Settings.Http">网络</sys:String>
+    <sys:String x:Key="Settings.NoProgress">无进度超时（秒）</sys:String>
+    <sys:String x:Key="Settings.MaxParallel">同时下载（并发数）</sys:String>
+    <sys:String x:Key="Settings.MaxParallelHint">默认 4；1 = 串行。老源并发太高会 502，建议 2–4。</sys:String>
+    <sys:String x:Key="Settings.MaxPerRepo">单源同时下载上限</sys:String>
+    <sys:String x:Key="Download.ParallelStatus">正在下载 {0} 个包（最多 {1} 路并发）</sys:String>
+    <sys:String x:Key="Settings.TotalTimeout">总超时（分钟）</sys:String>
+    <sys:String x:Key="Settings.SourceVisibility">源显示</sys:String>
+    <sys:String x:Key="Settings.ShowDisabledSources">显示更多源（含已停用的内置源）</sys:String>
+    <sys:String x:Key="Settings.ShowDisabledSourcesHint">默认只显示可用的源；勾选后把内置但已停用的源（modmyi / zodttd 等）也列出来，可单独启用或改地址。</sys:String>
+    <sys:String x:Key="Settings.Paths">目录</sys:String>
+    <sys:String x:Key="Settings.ArchiveRoot">存档目录</sys:String>
+    <sys:String x:Key="Settings.ProgramDir">程序目录</sys:String>
+    <sys:String x:Key="Settings.PathNote">只读写程序目录；存档目录可改，但必须可写。</sys:String>
+    <sys:String x:Key="Settings.Save">保存</sys:String>
+    <sys:String x:Key="Settings.Cancel">取消</sys:String>
+    <sys:String x:Key="Settings.Saved">设置已保存</sys:String>
+
+    <sys:String x:Key="Main.Queue.Title">下载队列</sys:String>
+    <sys:String x:Key="Main.Queue.Clear">清空队列</sys:String>
+    <sys:String x:Key="Source.Menu.Add">添加源…</sys:String>
+    <sys:String x:Key="Source.Menu.Edit">编辑当前源…</sys:String>
+    <sys:String x:Key="Source.Menu.Delete">删除当前源</sys:String>
+    <sys:String x:Key="Source.DeleteConfirm">删除源「{0}」？&#10;&#10;会同时删除该源已入库的 {1} 行包记录（provides 一并删除）。存档目录里的 deb 文件不受影响。</sys:String>
+    <sys:String x:Key="SourceEdit.Title">源</sys:String>
+    <sys:String x:Key="SourceEdit.Name">名称</sys:String>
+    <sys:String x:Key="SourceEdit.BaseUrl">地址</sys:String>
+    <sys:String x:Key="SourceEdit.Layout">布局</sys:String>
+    <sys:String x:Key="SourceEdit.LayoutDists">Dists（/dists/…）</sys:String>
+    <sys:String x:Key="SourceEdit.LayoutFlat">Flat（/Packages）</sys:String>
+    <sys:String x:Key="SourceEdit.Suite">Suite</sys:String>
+    <sys:String x:Key="SourceEdit.Component">Component</sys:String>
+    <sys:String x:Key="SourceEdit.Priority">优先级（小=优先）</sys:String>
+    <sys:String x:Key="SourceEdit.Architecture">架构</sys:String>
+    <sys:String x:Key="SourceEdit.Enabled">启用（参与「全部」页签的批量抓取）</sys:String>
+    <sys:String x:Key="Source.DisabledSuffix">（已禁用）</sys:String>
+    <sys:String x:Key="SourceEdit.Save">保存</sys:String>
+    <sys:String x:Key="SourceEdit.Cancel">取消</sys:String>
+    <sys:String x:Key="SourceEdit.NameHint">可以留空：自动用地址的主机名（如 apt.saurik.com）。</sys:String>
+    <sys:String x:Key="SourceEdit.Preview">将保存为：名称「{0}」  地址「{1}」（地址缺协议时自动补 http://）</sys:String>
+    <sys:String x:Key="SourceEdit.BadAddress">地址无法识别：{0}</sys:String>
+    <sys:String x:Key="Err.SourceSave">源未能保存：{0}</sys:String>    <sys:String x:Key="Export.Done">导出到：{0}&#10;&#10;本次闭包 {1} 个 deb（{2}）：新增 {3} / 已存在跳过 {4} / 内容不同未覆盖 {5}。&#10;导出只复制文件，不删除、不移动原来的 deb。</sys:String>
+    <sys:String x:Key="Main.Toolbar.Cancel">取消</sys:String>
+    <sys:String x:Key="Export.SkippedDifferent">有 {0} 个同名文件因内容不同**未被覆盖**，已保留原文件（详见 manifest.json 的 warnings）。</sys:String>
+    <sys:String x:Key="Menu.Library.ExportGroup">导出这一组（全部 deb）…</sys:String>
+    <sys:String x:Key="Menu.Library.ExportFile">导出这个 deb…</sys:String>
+    <sys:String x:Key="Menu.Library.OpenFolder">打开所在文件夹</sys:String>
+    <sys:String x:Key="Menu.Library.Expand">展开</sys:String>
+    <sys:String x:Key="Menu.Library.Collapse">收起</sys:String>
+    <sys:String x:Key="Menu.Library.SelectedCount">选中的 {0} 组</sys:String>
+    <sys:String x:Key="Menu.Library.DeleteGroup">删除这一组记录…</sys:String>
+    <sys:String x:Key="Menu.Library.DeleteGroupConfirm">删除分组记录「{0} {1}」？&#10;&#10;只删这条记录；磁盘上的 deb 文件不动。</sys:String>
+    <sys:String x:Key="Menu.CopyPackageId">复制包名</sys:String>
+    <sys:String x:Key="Menu.CopyVersion">复制版本</sys:String>
+    <sys:String x:Key="Menu.CopyFileName">复制文件名</sys:String>
+    <sys:String x:Key="Menu.CopyRow">复制整行（Tab 分隔）</sys:String>
+    <sys:String x:Key="Menu.Package.Resolve">算闭包（这个包）</sys:String>
+    <sys:String x:Key="Menu.Package.Export">算闭包并导出…</sys:String>
+    <sys:String x:Key="Menu.Package.Detail">查看详情</sys:String>
+    <sys:String x:Key="Export.LibraryDone">已复制 {0} 个 deb 到：&#10;{1}&#10;&#10;缺文件 {2} 个 / 已存在跳过 {3} / 内容不同未覆盖 {4}</sys:String></ResourceDictionary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
